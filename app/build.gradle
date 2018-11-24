@@ -34,8 +34,8 @@ dependencies {
     // https://mvnrepository.com/artifact/org.mockito/mockito-core
     testImplementation group: 'org.mockito', name: 'mockito-core', version: '2.23.4'
     testImplementation "androidx.arch.core:core-testing:2.0.0"// https://mvnrepository.com/artifact/org.assertj/assertj-core
-    testCompile group: 'org.assertj', name: 'assertj-core', version: '3.11.1'
-
+    testImplementation group: 'org.assertj', name: 'assertj-core', version: '3.11.1'
+    testImplementation 'com.github.xgouchet:Elmyr:0.9'
 
 
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
