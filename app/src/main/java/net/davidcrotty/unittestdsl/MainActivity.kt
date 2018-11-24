@@ -17,9 +17,12 @@ class MainActivity : AppCompatActivity() {
     }
 }
 
-class Order(val name: String, val email: String, val ingredients: Ingredients)
+class Order(val requestID: String, val name: String, val email: String, val ingredients: Ingredients)
 
-class Ingredients(val waterTemperature: Int, sugarCount: Int, milk: Boolean, keyIngredient: KeyIngredient)
+data class Ingredients(val waterTemperature: Int? = null,
+                       val sugarCount: Int? = null,
+                       val milk: Boolean? = null,
+                       val keyIngredient: KeyIngredient? = null)
 
 class OrderStatus(val success: Boolean, val orderNumber: Int, ingredients: Ingredients)
 
@@ -31,7 +34,7 @@ sealed class KeyIngredient {
 
 abstract class UseCase<T, R> {
 
-    private val liveData = MutableLiveData<R>()
+    protected val liveData = MutableLiveData<R>()
 
     abstract fun execute(param: T)
 
@@ -40,9 +43,17 @@ abstract class UseCase<T, R> {
     }
 }
 
-class DrinkUseCase : UseCase<Order, OrderStatus>() {
+class DrinkUseCase(private val api: RemoteAPI) : UseCase<Order, OrderStatus>() {
     override fun execute(order: Order) {
+        val orderNumber = if (order.ingredients.keyIngredient == KeyIngredient.BreakfastTea) {
+            api.makeTea(order.requestID)
+        } else {
+            api.makeCoffee(order.requestID)
+        }
 
+        liveData.postValue(
+            OrderStatus(true, orderNumber, order.ingredients)
+        )
     }
 }
 
