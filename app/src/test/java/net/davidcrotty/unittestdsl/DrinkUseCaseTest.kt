@@ -1,13 +1,9 @@
 package net.davidcrotty.unittestdsl
 
-import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import org.junit.Assert
-import org.junit.Before
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.TestRule
-import org.mockito.MockitoAnnotations
-import java.security.Key
 
 class DrinkUseCaseTest {
 
@@ -30,6 +26,7 @@ class DrinkUseCaseTest {
         case.execute(order)
 
         // Then should have a Tea order
+        assertThat(result.value!!.success).`as`("Order was \"%b\"", result.value!!.success).isEqualTo(true)
     }
 }
 
